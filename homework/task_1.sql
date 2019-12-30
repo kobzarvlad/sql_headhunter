@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS vacancy (
 
 CREATE TABLE IF NOT EXISTS resume_body (
 	resume_body_id serial PRIMARY KEY,
-	name varchar(220) DEFAULT ''::varchar NOT NULL,
 	compensation bigint DEFAULT 0,
 	is_male boolean NOT NULL,
 	age integer NOT NULL,
@@ -51,6 +50,7 @@ CREATE TABLE IF NOT EXISTS resume_body (
 
 CREATE TABLE IF NOT EXISTS resume (
 	resume_id serial PRIMARY KEY,
+	title varchar(220) DEFAULT ''::varchar NOT NULL,
 	creation_time timestamp NOT NULL,
 	jobseeker_id integer,
 	area_id integer,

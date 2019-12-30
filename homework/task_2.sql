@@ -55,13 +55,18 @@ UPDATE vacancy_body
 WHERE (vacancy_body_id % 5) = 0;
 
 -- resume
-INSERT INTO resume(creation_time, jobseeker_id, area_id, active)
+INSERT INTO resume(creation_time, jobseeker_id, area_id, active, title)
 	SELECT
 		'2015-01-01'::timestamp + (random() * 365 * 24 * 3600 * 1) * '1 second'::interval AS creation_time,
 		((random() * 99999)::integer + 1) AS jobseeker_id,
 		((random() * 1000)::integer + 1) AS area_id,
-		(random() > 0.5) AS active		
-	FROM generate_series(1, 100000);
+		(random() > 0.5) AS active,
+		(SELECT string_agg(
+			substr(
+				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+				(random() * 61)::integer + 1, 1),'')
+		FROM generate_series(1, (random() * 210)::integer + i % 10 + 1)) AS title
+	FROM generate_series(1, 100000) AS g(i);
 		
 
 -- response
