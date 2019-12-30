@@ -21,14 +21,16 @@ ON resume
 FOR EACH ROW
 EXECUTE PROCEDURE add_to_logs();
 
---UPDATE resume SET title = 'new title2' WHERE resume_id = 1;
---DELETE FROM resume WHERE resume_id = 5;
+--UPDATE resume SET title = '5' WHERE resume_id = 88;
+--DELETE FROM resume WHERE resume_id = 100;
 
 SELECT resume_log.resume_id,  
 	last_change_time,
 	old_row::json->'title' as old_title,
-	title as new_title
+	LAG(old_row::json->'title', -1, to_json(resume.title)) OVER 
+	(PARTITION BY resume_log.resume_id ORDER BY resume_log.last_change_time) as new_title
 FROM resume_log LEFT JOIN resume ON resume_log.resume_id = resume.resume_id;
+
 
 
 
